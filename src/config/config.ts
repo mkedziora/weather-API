@@ -26,14 +26,14 @@ const { env } = process;
 
 const config: Config = {
   MYSQL: {
-    host: defaultTo(env.MYSQL_HOST, "db"),
+    host: defaultTo(env.MYSQL_HOST, "localhost"),
     port: defaultTo(env.MYSQL_PORT, 3306),
-    user: defaultTo(env.MYSQL_USERNAME, "user"),
+    user: defaultTo(env.MYSQL_USERNAME, "root"),
     password: defaultTo(env.MYSQL_PASSWORD, "password"),
     database: defaultTo(env.MYSQL_DATABASE, "task"),
   },
   HTTP: {
-    port: defaultTo(env.MYSQL_PORT, 3000),
+    port: defaultTo(env.MYSQL_PORT, 8080),
   },
 };
 

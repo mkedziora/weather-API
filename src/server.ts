@@ -1,3 +1,6 @@
+import "source-map-support/register";
+import "reflect-metadata";
+
 import initializeApp from "./app";
 import { AppDependencies } from "./lib/di";
 
