@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { decode } from "jsonwebtoken";
 import { get } from "lodash";
 
 import { BadRequest } from "../../../utils/errors";
@@ -7,6 +6,7 @@ import {
   getCityById,
   postUserFavoriteCity,
 } from "../../../services/DB/databaseService";
+import { getUsernameFromToken } from "../../../utils/getUsernameFromAuthorizationHeader";
 
 const router = Router();
 
@@ -17,10 +17,7 @@ router.post("/location/:locationId/favorite", async (req, res) => {
     const city = await getCityById(locationId);
     if (!city) throw new BadRequest("Location with a given ID not found", 404);
 
-    const authorization = get(req, "headers.authorization");
-    const token = authorization.split(" ")[1];
-    const decodedToken = decode(token);
-    const username = get(decodedToken, "context.username");
+    const username = getUsernameFromToken(req);
 
     const result = await postUserFavoriteCity(username, locationId);
 

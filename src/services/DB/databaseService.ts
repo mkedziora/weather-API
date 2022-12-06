@@ -20,8 +20,11 @@ const database: DataSource = new DataSource({
 });
 
 const getUserByUsername = async (username: string): Promise<User> => {
-  return database.getRepository(UserEntity).findOneBy({
-    username,
+  return database.getRepository(UserEntity).findOne({
+    where: { username },
+    relations: {
+      favoriteCities: true,
+    },
   });
 };
 
@@ -38,12 +41,7 @@ const postUserFavoriteCity = async (
   const city = await database.getRepository(CityEntity).findOneBy({
     id: cityId,
   });
-  const user = await database.getRepository(UserEntity).findOne({
-    where: { username },
-    relations: {
-      favoriteCities: true,
-    },
-  });
+  const user = await getUserByUsername(username);
   if (!user.favoriteCities?.length) {
     user.favoriteCities = [city];
   } else {
