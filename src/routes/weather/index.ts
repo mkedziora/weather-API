@@ -1,8 +1,9 @@
 import { Router } from "express";
 
-const router = Router();
+import { checkJWTMiddleware } from "../../middleware/checkJWTMiddleware";
 
-router.get("/weather", (req, res) => {
+const router = Router();
+router.get("/weather", checkJWTMiddleware, (req, res) => {
   console.log("TODO");
 });
 

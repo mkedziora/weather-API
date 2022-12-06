@@ -17,3 +17,23 @@ export class UserNotFound extends Error {
     super();
   }
 }
+
+export class UnauthorizedException extends Error {
+  public constructor(
+    public message: string = "Forbidden access.",
+    public code: number = 403,
+    public type: string = "UnauthorizedException"
+  ) {
+    super();
+  }
+}
+
+export class BadRequest extends Error {
+  public constructor(
+    public message: string = "Bad Request.",
+    public code: number = 400,
+    public type: string = "BadRequest"
+  ) {
+    super();
+  }
+}

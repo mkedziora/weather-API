@@ -1,8 +1,14 @@
-import { sign } from "jsonwebtoken";
+import { decode, JwtPayload, sign, verify } from "jsonwebtoken";
 
 import { User } from "../models/user";
 import { getUserByUsername } from "./DB/databaseService";
-import { InvalidBasicToken, UserNotFound } from "../utils/errors";
+import {
+  InvalidBasicToken,
+  UnauthorizedException,
+  UserNotFound,
+} from "../utils/errors";
+
+const SECRET = "Jigy1dh0cC6rIsRCkbdWOf14z5J0Nipp"; // normally I wouldn't put the secret or private key as hardcoded string, this is a big simplification
 
 const generateUserToken = async (basicToken: string): Promise<string> => {
   const decodedUserFromToken = decodeBasicToken(basicToken);
@@ -22,9 +28,22 @@ const generateUserToken = async (basicToken: string): Promise<string> => {
     iat: date,
     exp: tokenExpiration,
   });
-  return sign(tokenData, "Jigy1dh0cC6rIsRCkbdWOf14z5J0Nipp"); // normally I wouldn't put the secret or private key as hardcoded string, this is a big simplification
+  return sign(tokenData, SECRET);
 };
 
+const validateJWTToken = (token: string): boolean => {
+  try {
+    if (verify(token, SECRET)) {
+      const tokenPayload = decode(token) as JwtPayload;
+      if (tokenPayload.exp && tokenPayload.exp > Date.now()) {
+        return true;
+      }
+    }
+    throw new UnauthorizedException();
+  } catch (error) {
+    throw new UnauthorizedException(error);
+  }
+};
 const decodeBasicToken = (basicToken: string): User => {
   const decodedToken: string[] = Buffer.from(basicToken, "base64")
     .toString()
@@ -35,4 +54,5 @@ const decodeBasicToken = (basicToken: string): User => {
     password: decodedToken[1],
   };
 };
-export { generateUserToken };
+
+export { generateUserToken, validateJWTToken };

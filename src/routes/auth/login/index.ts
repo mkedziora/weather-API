@@ -6,7 +6,7 @@ import { generateUserToken } from "../../../services/authService";
 
 const router = Router();
 
-router.get("/login", async (req, res) => {
+router.post("/login", async (req, res) => {
   try {
     const encodedToken = get(req, "headers.authorization", "").split(" ")[1];
     if (!encodedToken) {
