@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
 
 import { Point } from "../../models/point";
 
-@Entity()
+@Entity("users")
 class User {
   @PrimaryGeneratedColumn()
   id: number;
@@ -14,7 +14,7 @@ class User {
   password: string;
 }
 
-@Entity()
+@Entity("cities")
 class City {
   @PrimaryGeneratedColumn()
   id: number;
