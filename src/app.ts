@@ -1,4 +1,8 @@
 import express, { Express } from "express";
+import dotenv from "dotenv";
+import path from "path";
+
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 import router from "./routes";
 import { database } from "./services/DB/databaseService";
