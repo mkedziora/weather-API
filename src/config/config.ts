@@ -33,7 +33,7 @@ const config: Config = {
     database: defaultTo(env.MYSQL_DATABASE, "task"),
   },
   HTTP: {
-    port: defaultTo(env.MYSQL_PORT, 8080),
+    port: defaultTo(env.APP_PORT, 3000),
   },
 };
 

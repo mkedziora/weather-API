@@ -15,6 +15,7 @@ services:
       - ./package.json:/app/package.json
     restart: always
     command: npm run start
+    network_mode: host
     ports:
       - 3000:3000
       - 9229:9229
