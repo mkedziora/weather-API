@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   JoinTable,
   ManyToMany,
+  ManyToOne,
 } from "typeorm";
 
 import { Point } from "../../models/point";
@@ -50,4 +51,23 @@ class City {
   coordinate: Point;
 }
 
-export { User, City };
+@Entity()
+class Weather {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column("text", {
+    transformer: {
+      from: (r: string): object[] => {
+        return JSON.parse(r);
+      },
+      to: (r: object[]): string => JSON.stringify(r),
+    },
+  })
+  apiResponse: object[];
+
+  @ManyToOne(() => City)
+  city: City;
+}
+
+export { User, City, Weather };

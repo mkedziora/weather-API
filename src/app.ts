@@ -1,6 +1,7 @@
 import express, { Express } from "express";
 import dotenv from "dotenv";
 import path from "path";
+import { Worker } from "worker_threads";
 
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
@@ -16,6 +17,8 @@ const initializeApp = (port: number) => {
     .catch((err) => {
       console.error("Error during Data Source initialization:", err);
     });
+
+  new Worker(path.resolve(__dirname, "./workers/weatherWorker.js"));
 
   const app: Express = express();
 
