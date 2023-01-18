@@ -37,6 +37,16 @@ const initializeApp = (port: number) => {
     next();
   });
 
+  app.use((error, req, res, next) => {
+    console.error("top_level_error", { error });
+    const response = {
+      code: 500,
+      message: "An internal error occurred.",
+      type: "InternalError",
+    };
+    res.status(500).send(response);
+  });
+
   app.use(router);
 
   return app;

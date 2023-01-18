@@ -10,8 +10,23 @@ const checkJWTMiddleware = (
 ) => {
   const { headers } = req;
   const { authorization } = headers;
+  if (!authorization) {
+    const response = {
+      code: 401,
+      message: "Authorization header not present in the request.",
+      type: "UnauthorizedException",
+    };
+    res.status(401).send(response);
+  }
   const token = authorization.split(" ")[1];
-  if (!token) throw new UnauthorizedException();
+  if (!token) {
+    const response = {
+      code: 401,
+      message: "Bearer token not present in the request.",
+      type: "UnauthorizedException",
+    };
+    res.status(401).send(response);
+  }
   else {
     try {
       if (validateJWTToken(token)) next();

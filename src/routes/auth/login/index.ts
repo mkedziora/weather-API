@@ -13,7 +13,11 @@ router.post("/login", async (req, res) => {
       console.error("Basic token not present");
       res
         .status(401)
-        .send(new InvalidBasicToken("Basic token not present in the request."));
+        .send(
+          new InvalidBasicToken(
+            "Basic Authentication credentials are not present in the request."
+          )
+        );
       return;
     }
     const generatedToken = await generateUserToken(encodedToken);

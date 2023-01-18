@@ -1,6 +1,20 @@
 version: "3.9"
 
 services:
+  db:
+    image: mysql/mysql-server:8.0.23
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=task
+      - MYSQL_ROOT_HOST=%
+    volumes:
+      - ./db-entrypoint.sql:/docker-entrypoint-initdb.d/db-entrypoint.sql
+      - ./db-data.sql:/db-data.sql
+      - ./config.cnf:/config.cnf
+    ports:
+      - 3306:3306
   app:
     build:
       context: .
@@ -19,18 +33,3 @@ services:
     ports:
       - 3000:3000
       - 9229:9229
-
-  db:
-    image: mysql/mysql-server:8.0.23
-    environment:
-      - MYSQL_ROOT_PASSWORD=password
-      - MYSQL_USER=user
-      - MYSQL_PASSWORD=password
-      - MYSQL_DATABASE=task
-      - MYSQL_ROOT_HOST=%
-    volumes:
-      - ./db-entrypoint.sql:/docker-entrypoint-initdb.d/db-entrypoint.sql
-      - ./db-data.sql:/db-data.sql
-      - ./config.cnf:/config.cnf
-    ports:
-      - 3306:3306
