@@ -1,10 +1,12 @@
 import { DataSource } from "typeorm";
 
 import config from "../../config/config";
-import { User } from "../../models/user";
 import { User as UserEntity } from "../../services/DB/entities";
 import { City as CityEntity } from "../../services/DB/entities";
+import { Weather as WeatherEntity } from "../../services/DB/entities";
+import { User } from "../../models/user";
 import { City } from "../../models/city";
+import { Weather } from "../../models/weather";
 
 const database: DataSource = new DataSource({
   type: "mysql",
@@ -34,6 +36,10 @@ const getCityById = async (id: number): Promise<City> => {
   });
 };
 
+const getAllCities = async (): Promise<City[]> => {
+  return database.getRepository(CityEntity).find();
+};
+
 const postUserFavoriteCity = async (
   username: string,
   cityId: number
@@ -51,4 +57,26 @@ const postUserFavoriteCity = async (
   return database.manager.save(user);
 };
 
-export { database, getUserByUsername, getCityById, postUserFavoriteCity };
+const postWeather = async (weather: Weather): Promise<Weather> => {
+  return database.getRepository(WeatherEntity).save(weather);
+};
+
+const getLatestWeatherByCityId = async (cityId: number) => {
+  return database.getRepository(WeatherEntity).findOne({
+    where: { city: { id: cityId } },
+    relations: {
+      city: true,
+    },
+    order: { id: "DESC" },
+  });
+};
+
+export {
+  database,
+  getUserByUsername,
+  getCityById,
+  postUserFavoriteCity,
+  postWeather,
+  getAllCities,
+  getLatestWeatherByCityId,
+};
