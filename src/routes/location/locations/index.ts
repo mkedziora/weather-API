@@ -1,7 +1,10 @@
 import { Router } from "express";
 
 import { getUsernameFromToken } from "../../../utils/getUsernameFromAuthorizationHeader";
-import { getAllCities, getUserByUsername } from "../../../services/DB/databaseService";
+import {
+  getAllCities,
+  getUserByUsername,
+} from "../../../services/DB/databaseService";
 
 const router = Router();
 
@@ -9,7 +12,7 @@ router.get("/locations", async (req, res) => {
   try {
     const result = await getAllCities();
     res.status(200).send({
-      "cities_availavle": result
+      cities_availavle: result,
     });
   } catch (error) {
     const response = {

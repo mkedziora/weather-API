@@ -26,8 +26,7 @@ const checkJWTMiddleware = (
       type: "UnauthorizedException",
     };
     res.status(401).send(response);
-  }
-  else {
+  } else {
     try {
       if (validateJWTToken(token)) next();
       else throw new UnauthorizedException();
